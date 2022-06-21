@@ -15,7 +15,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
