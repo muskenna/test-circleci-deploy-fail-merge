@@ -1,4 +1,6 @@
 version: 2.1
+orbs: 
+  aws-s3: circleci/aws-s3@3.0.0
 
 commands:
   get-tag:
@@ -22,7 +24,7 @@ commands:
             echo $x
 
 jobs:
-  build:
+  test:
     docker:
       - image: cimg/python:3.10.1
     steps:
@@ -44,8 +46,23 @@ jobs:
           command: |
             . venv/bin/activate
             echo $BRANCH_TAG
-            echo $CIRCLE_BRANCH
             python3 tests.py
       - store_artifacts:
           path: test-reports/
           destination: python_app
+  deploy:
+    docker:
+      - image: cimg/python:3.10.1
+    steps:
+      - checkout     
+      - aws-s3/copy:
+          from: hello.py
+          to: 's3://test-circleci-deploy-692805717546'
+
+workflows:
+  upload:
+    jobs:
+      - test
+      - deploy:
+          requires:
+            - test
