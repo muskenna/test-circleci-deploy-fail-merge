@@ -44,6 +44,7 @@ jobs:
           command: |
             . venv/bin/activate
             echo $BRANCH_TAG
+            echo $CIRCLE_BRANCH
             python3 tests.py
       - store_artifacts:
           path: test-reports/
