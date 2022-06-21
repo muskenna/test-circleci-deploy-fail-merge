@@ -6,9 +6,9 @@ commands:
       - run:
           name: 'Get tag from branch'
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              echo 'export BRANCH_TAG="master" env="prd"' >> $BASH_ENV
-              echo 'export BRANCH_TAG="master" env="prd"' >> ~/.bashrc
+            if [ "${CIRCLE_BRANCH}" == "main" ]; then
+              echo 'export BRANCH_TAG="main" env="prd"' >> $BASH_ENV
+              echo 'export BRANCH_TAG="main" env="prd"' >> ~/.bashrc
               x='prod'
             elif [[ "${CIRCLE_BRANCH}" == "staging" ]]; then
               echo 'export BRANCH_TAG="staging" env="stg"' >> $BASH_ENV
