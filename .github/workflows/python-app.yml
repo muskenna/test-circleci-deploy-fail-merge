@@ -5,9 +5,9 @@ name: Python application
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "develop" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "develop" ]
 
 permissions:
   contents: read
@@ -15,7 +15,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
+    environment: development
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
@@ -30,7 +30,7 @@ jobs:
       run: |
         python3 tests.py
       env:
-          env: "prd"
+          env: "dev"
     - name: Upload binary to S3 bucket
       uses: tpaschalis/s3-sync-action@master
       env:
