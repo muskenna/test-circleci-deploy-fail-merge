@@ -62,6 +62,6 @@ jobs:
 workflows:
   upload:
     jobs:
-      - s3upload:
+      - deploy:
           requires:
             - test
