@@ -50,11 +50,14 @@ jobs:
       - store_artifacts:
           path: test-reports/
           destination: python_app
-  s3upload:          
+  deploy:
+    docker:
+      - image: cimg/python:3.10.1
+    steps:
+      - checkout     
       - aws-s3/copy:
-          arguments: '--dryrun'
-          from: bucket/build_asset.txt
-          to: 's3://my-s3-bucket-name'
+          from: hello.py
+          to: 's3://test-circleci-deploy-692805717546'
 
 workflows:
   upload:
