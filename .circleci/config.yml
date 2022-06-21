@@ -62,6 +62,7 @@ jobs:
 workflows:
   upload:
     jobs:
+      - test
       - deploy:
           requires:
             - test
