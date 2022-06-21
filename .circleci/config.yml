@@ -1,10 +1,33 @@
 version: 2.1
+
+commands:
+  get-tag:
+    steps:
+      - run:
+          name: 'Get tag from branch'
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo 'export BRANCH_TAG="master" env="prd"' >> $BASH_ENV
+              echo 'export BRANCH_TAG="master" env="prd"' >> ~/.bashrc
+              x='prod'
+            elif [[ "${CIRCLE_BRANCH}" == "staging" ]]; then
+              echo 'export BRANCH_TAG="staging" env="stg"' >> $BASH_ENV
+              echo 'export BRANCH_TAG="staging" env="stg"' >> ~/.bashrc
+              x='staging'
+            else
+              echo 'export BRANCH_TAG="dev" env="dev"' >> $BASH_ENV
+              echo 'export BRANCH_TAG="dev" env="dev"' >> ~/.bashrc
+              x='dev'
+            fi
+            echo $x
+
 jobs:
   build:
     docker:
       - image: cimg/python:3.10.1
     steps:
       - checkout
+      - get-tag      
       - restore_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
       - run:
@@ -20,6 +43,7 @@ jobs:
           name: Running tests
           command: |
             . venv/bin/activate
+            echo $BRANCH_TAG
             python3 tests.py
       - store_artifacts:
           path: test-reports/
